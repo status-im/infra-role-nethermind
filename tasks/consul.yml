@@ -1,0 +1,63 @@
+---
+- name: Create service definition
+  include_role: name=consul-service
+  vars:
+    consul_config_name: '{{ nethermind_cont_name }}'
+    consul_services:
+      - id:   '{{ nethermind_cont_name }}'
+        name: '{{ nethermind_consul_service_name }}'
+        tags: '{{ nethermind_consul_tags }}'
+        port: '{{ nethermind_port }}'
+        address: '{{ ansible_host }}'
+        #meta:
+        #  node_addr: '{{ node_info.json.result.id }}'
+        #  node_enode: '{{ node_info.json.result.enode }}'
+        checks:
+          - id: '{{ nethermind_cont_name }}-status'
+            type: tcp
+            tcp: '127.0.0.1:{{ nethermind_port }}'
+
+      - id:   '{{ nethermind_cont_name }}-rpc'
+        name: '{{ nethermind_consul_service_name }}-rpc'
+        tags: '{{ nethermind_consul_tags + ["rpc"] }}'
+        port: '{{ nethermind_rpc_port }}'
+        address: '{{ nethermind_consul_advertised_address }}'
+        disabled: '{{ not nethermind_rpc_enabled }}'
+        meta:
+          url: 'http://{{ nethermind_consul_advertised_address }}:{{ nethermind_rpc_port }}'
+        checks:
+          - id: '{{ nethermind_cont_name }}-rpc-status'
+            type: 'script'
+            script: '{{ nethermind_rpc_wrapper }} eth_syncing'
+            timeout: '5s'
+            failures_before_critical: 3
+
+      - id:   '{{ nethermind_cont_name }}-authrpc'
+        name: '{{ nethermind_consul_service_name }}-authrpc'
+        tags: '{{ nethermind_consul_tags + ["authrpc", "engine"] }}'
+        port: '{{ nethermind_authrpc_port }}'
+        address: '{{ nethermind_consul_advertised_address }}'
+        disabled: '{{ not nethermind_authrpc_enabled }}'
+        meta:
+          url: 'http://{{ nethermind_consul_advertised_address }}:{{ nethermind_authrpc_port }}'
+        checks:
+          - id: '{{ nethermind_cont_name }}-authrpc-status'
+            type: 'tcp'
+            tcp: 'localhost:{{ nethermind_authrpc_port }}'
+            failures_before_critical: 3
+
+      - id:   '{{ nethermind_cont_name }}-ws'
+        name: '{{ nethermind_consul_service_name }}-ws'
+        tags: '{{ nethermind_consul_tags + ["websocket"] }}'
+        port: '{{ nethermind_websocket_port }}'
+        address: '{{ nethermind_consul_advertised_address }}'
+        disabled: '{{ not nethermind_websocket_enabled }}'
+        meta:
+          url: 'ws://{{ nethermind_consul_advertised_address }}:{{ nethermind_websocket_port }}'
+        checks:
+          - id: '{{ nethermind_cont_name }}-ws-status'
+            name: 'Nethermind WebSocket API'
+            type: 'tcp'
+            tcp: 'localhost:{{ nethermind_websocket_port }}'
+            failures_before_critical: 3
+

@@ -1,0 +1,93 @@
+---
+nethermind_service_name: 'nethermind'
+nethermind_service_path: '/docker/{{ nethermind_service_name }}'
+nethermind_compose_path: '{{ nethermind_service_path }}/docker-compose.yml'
+
+# Container config
+nethermind_cont_tag: '1.20.1'
+nethermind_cont_image: 'nethermind/nethermind:{{ nethermind_cont_tag }}'
+nethermind_cont_name: '{{ nethermind_service_name }}-node'
+nethermind_cont_vol: '{{ nethermind_service_path }}/node'
+nethermind_cont_stop_grace_period: '1m'
+
+# Security, json is optional
+#nethermind_account_pass: ~
+nethermind_account_pass_file: '{{ nethermind_cont_vol }}/keys/account.pass'
+
+# Enable metrics
+nethermind_metrics_enabled: true
+nethermind_metrics_port: 6060
+
+# RPC port of administration
+nethermind_rpc_enabled: true
+nethermind_rpc_addr: '127.0.0.1'
+nethermind_rpc_port: 8545
+# Available: admin, clique, debug, eth, les, miner, net, personal, rpc, txpool, web3, engine
+nethermind_rcp_api_modules: ['eth', 'net', 'web3', 'personal', 'admin', 'engine']
+# useful for linking containers
+nethermind_rpc_extra_vhost: 'nethermind'
+nethermind_rpc_vhosts:
+  - 'localhost'
+  - '{{ nethermind_cont_name }}'
+  - '{{ nethermind_rpc_extra_vhost }}'
+  - '{{ hostname }}'
+  - '{{ hostname }}.wg'
+  - '{{ ansible_local.wireguard.vpn_ip }}'
+
+# Engine API
+nethermind_authrpc_enabled: true
+nethermind_authrpc_addr: '127.0.0.1'
+nethermind_authrpc_port: 8551
+nethermind_authrpc_modules: ['Net', 'Eth', 'Subscribe', 'Web3']
+#nethermind_authrpc_jwtsecret: '0x64charHexEncodedSecretToken'
+nethermind_authrpc_jwtsecret_file: '{{ nethermind_cont_vol }}/keys/jwtsecret'
+
+# Web Sockets API
+nethermind_websocket_enabled: false
+nethermind_websocket_addr: '127.0.0.1'
+nethermind_websocket_port: '{{ nethermind_rpc_port|int + 1 | int }}'
+
+# Sync mode: full, light, snap
+nethermind_sync_mode: 'snap'
+# Maximum number of untrusted peers that can connect
+nethermind_max_peers: 100
+# Peer discovery protocol
+nethermind_discovery_enabled: true
+# Any additional flags you want to provide
+nethermind_extra_flags: []
+
+# Custom bootnodes
+nethermind_bootnodes: []
+
+# Logging level (off|trace|debug|info|warn|error)
+nethermind_log_level_name: 'info'
+
+# Available: mainnet, goerli, sepolia
+nethermind_network_name: 'mainnet'
+
+# Port to listen on
+nethermind_port: 30303
+# Address to advertise
+nethermind_public_addr: '{{ ansible_host }}'
+
+# Consul config
+nethermind_consul_enabled: true
+nethermind_consul_service_name: 'nethermind-{{ nethermind_network_name }}'
+nethermind_consul_advertised_address: '{{ ansible_local.wireguard.address }}'
+nethermind_consul_scope: 'main'
+nethermind_consul_default_tags:
+  - 'nethermind'
+  - 'scope:{{ nethermind_consul_scope }}'
+  - '{{ env }}.{{ stage }}'
+  - '{{ nethermind_network_name }}'
+nethermind_consul_extra_tags: []
+nethermind_consul_tags: '{{ nethermind_consul_default_tags + nethermind_consul_extra_tags }}'
+
+# Container memory limits
+nethermind_cont_mem_ratio: 0.6
+nethermind_cont_mem_limit: '{{ (ansible_memtotal_mb * nethermind_cont_mem_ratio|float) | int }}'
+
+# general container management
+compose_recreate: 'smart'
+compose_state: 'present'
+compose_restart: false

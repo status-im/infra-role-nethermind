@@ -1,0 +1,82 @@
+---
+version: '3.7'
+services:
+  nethermind:
+    container_name: '{{ nethermind_cont_name }}'
+    image: '{{ nethermind_cont_image }}'
+    user: root
+    restart: 'always'
+    stop_grace_period: '{{ nethermind_cont_stop_grace_period }}'
+    deploy:
+      resources:
+        limits:
+          memory: '{{ nethermind_cont_mem_limit }}m'
+    ports:
+      - '{{ nethermind_port }}:{{ nethermind_port }}/tcp'
+      - '{{ nethermind_port }}:{{ nethermind_port }}/udp'
+{% if nethermind_metrics_enabled %}
+      - '{{ nethermind_metrics_port }}:{{ nethermind_metrics_port }}/tcp'
+{% endif %}
+{% if nethermind_websocket_enabled %}
+      - '{{ nethermind_websocket_addr }}:{{ nethermind_websocket_port }}:{{ nethermind_websocket_port }}/tcp'
+{% endif %}
+{% if nethermind_rpc_enabled %}
+      - '{{ nethermind_rpc_addr }}:{{ nethermind_rpc_port }}:{{ nethermind_rpc_port }}/tcp'
+{% endif %}
+{% if nethermind_authrpc_enabled %}
+      - '{{ nethermind_authrpc_addr }}:{{ nethermind_authrpc_port }}:{{ nethermind_authrpc_port }}/tcp'
+{% endif %}
+    environment:
+      NETHERMIND_ENODE_IPADDRESS: '{{ nethermind_public_addr }}'
+      NETHERMIND_CORS_ORIGINS: '{{ nethermind_rpc_vhosts | join(",") }}'
+    volumes:
+      - '{{ nethermind_cont_vol }}/keys:/keys:rw'
+      - '{{ nethermind_cont_vol }}/data:/data:rw'
+      - '{{ nethermind_cont_vol }}/conf:/conf:ro'
+    command: |
+      --datadir=/data
+      --config=/conf/config.json
+      --log={{ nethermind_log_level_name }}
+      --Network.P2PPort={{ nethermind_port }}
+      --Network.MaxActivePeers={{ nethermind_max_peers }}
+      --Init.DiscoveryEnabled={{ nethermind_discovery_enabled | to_json }}
+{% if nethermind_discovery_enabled %}
+      --Network.DiscoveryPort={{ nethermind_port }}
+{% endif %}
+{% if nethermind_sync_mode == 'fast' %}
+      --Sync.FastSync=true
+{% elif nethermind_sync_mode == 'snap' %}
+      --Sync.SnapSync=true
+{% endif %}
+      --Metrics.Enabled={{ nethermind_metrics_enabled | to_json }}
+{% if nethermind_metrics_enabled %}
+      --Metrics.ExposePort={{ nethermind_metrics_port }}
+{% endif %}
+      --JsonRpc.Enabled={{ nethermind_rpc_enabled | to_json }}
+{% if nethermind_rpc_enabled %}
+      --JsonRpc.Host=0.0.0.0
+      --JsonRpc.Port={{ nethermind_rpc_port }}
+      --JsonRpc.EnabledModules={{ nethermind_rcp_api_modules | join(",") }}
+      --JsonRpc.IpcUnixDomainSocketPath=/data/nethermind.ipc
+{% endif %}
+{% if nethermind_authrpc_enabled %}
+      --JsonRpc.EngineHost=0.0.0.0
+      --JsonRpc.EnginePort={{ nethermind_authrpc_port }}
+      --JsonRpc.EngineEnabledModules={{ nethermind_authrpc_modules | join(",") }}
+      --JsonRpc.JwtSecretFile=/keys/jwtsecret
+{% endif %}
+      --Init.WebSocketsEnabled={{ nethermind_websocket_enabled | to_json }}
+{% if nethermind_websocket_enabled %}
+      --JsonRpc.WebSocketsPort={{ nethermind_websocket_port }}
+{% endif %}
+{% if (nethermind_bootnodes|length) > 0 %}
+      --Discovery.Bootnodes="{{ nethermind_bootnodes | sort | join(',') }}"
+{% endif %}
+      --KeyStore.PasswordFiles=/keys/account.pass
+      --KeyStore.KeyStoreDirectory=/keys
+{% if nethermind_account_addr is defined %}
+      --KeyStore.UnlockAccounts={{ nethermind_account_addr }}
+{% endif %}
+{% for extra_flag in nethermind_extra_flags %}
+      {{ extra_flag }}
+{% endfor %}

@@ -1,0 +1,36 @@
+---
+- name: Create container directories
+  file:
+    path: '{{ item }}'
+    owner: dockremap
+    group: docker
+    state: directory
+  with_items:
+    - '{{ nethermind_cont_vol }}/data'
+    - '{{ nethermind_cont_vol }}/keys'
+    - '{{ nethermind_cont_vol }}/conf'
+
+- name: Create config file
+  template:
+    dest:  '{{ nethermind_cont_vol }}/conf/config.json'
+    src:   'config.json.j2'
+    owner: 'dockremap'
+    group: 'docker'
+    mode:  0600
+
+- name: Create password file
+  copy:
+    dest:    '{{ nethermind_account_pass_file }}'
+    content: '{{ nethermind_account_pass | mandatory }}'
+    owner:   'dockremap'
+    group:   'docker'
+    mode:    0600
+
+- name: Create JWT secret file
+  when: nethermind_authrpc_jwtsecret is defined
+  copy:
+    dest:    '{{ nethermind_authrpc_jwtsecret_file }}'
+    content: '{{ nethermind_authrpc_jwtsecret | mandatory }}'
+    owner:   'dockremap'
+    group:   'docker'
+    mode:    0600
