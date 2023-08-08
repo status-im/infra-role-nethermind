@@ -10,14 +10,6 @@
     - '{{ nethermind_cont_vol }}/keys'
     - '{{ nethermind_cont_vol }}/conf'
 
-- name: Create config file
-  template:
-    dest:  '{{ nethermind_cont_vol }}/conf/config.json'
-    src:   'config.json.j2'
-    owner: 'dockremap'
-    group: 'docker'
-    mode:  0600
-
 - name: Create JSON RPC wrapper script
   template:
     dest:  '{{ nethermind_rpc_wrapper }}'

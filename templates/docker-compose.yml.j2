@@ -35,7 +35,7 @@ services:
       - '{{ nethermind_cont_vol }}/conf:/conf:ro'
     command: |
       --datadir=/data
-      --config=/conf/config.json
+      --config={{ nethermind_network_name }}
       --log={{ nethermind_log_level_name }}
       --Network.P2PPort={{ nethermind_port }}
       --Network.MaxActivePeers={{ nethermind_max_peers }}
