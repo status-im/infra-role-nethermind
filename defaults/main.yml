@@ -53,6 +53,7 @@ nethermind_sync_mode: 'snap'
 nethermind_max_peers: 100
 # Peer discovery protocol
 nethermind_discovery_enabled: true
+#nethermind_discovery_dns: 'enrtree://AKA3AM6LPBYEUDMVNU3BSVQJ5AD45Y7YPOHJLEF6W26QOE4VTUDPE@snap.goerli.ethdisco.net'
 # Any additional flags you want to provide
 nethermind_extra_flags: []
 

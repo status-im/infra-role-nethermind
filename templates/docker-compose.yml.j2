@@ -43,6 +43,9 @@ services:
 {% if nethermind_discovery_enabled %}
       --Network.DiscoveryPort={{ nethermind_port }}
 {% endif %}
+{% if nethermind_discovery_dns is defined %}
+      --Network.DiscoveryDns={{ nethermind_discovery_dns }}
+{% endif %}
 {% if nethermind_sync_mode == 'fast' %}
       --Sync.FastSync=true
 {% elif nethermind_sync_mode == 'snap' %}
