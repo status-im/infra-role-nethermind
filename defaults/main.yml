@@ -23,7 +23,7 @@ nethermind_rpc_enabled: true
 nethermind_rpc_addr: '127.0.0.1'
 nethermind_rpc_port: 8545
 # Available: Admin, Clique, Consensus, Db, Debug, Deposit, Erc20, Eth, Evm, Health Mev, NdmConsumer, NdmProvider, Net, Nft, Parity, Personal, Proof, Subscribe, Trace, TxPool, Vault, Web3
-nethermind_rcp_api_modules: ['Eth', 'Subscribe', 'Trace', 'TxPool', 'Web3', 'Personal', 'Proof', 'Net', 'Parity', 'Health', 'Rpc']
+nethermind_rcp_api_modules: ['Admin', 'Eth', 'Subscribe', 'Trace', 'TxPool', 'Web3', 'Personal', 'Proof', 'Net', 'Parity', 'Health', 'Rpc']
 # useful for linking containers
 nethermind_rpc_extra_vhost: 'nethermind'
 nethermind_rpc_vhosts:
@@ -69,6 +69,9 @@ nethermind_network_name: 'mainnet'
 nethermind_port: 30303
 # Address to advertise
 nethermind_public_addr: '{{ ansible_host }}'
+
+# Wrapper for easier RPC usage
+nethermind_rpc_wrapper: '{{ nethermind_service_path }}/rpc.sh'
 
 # Consul config
 nethermind_consul_enabled: true

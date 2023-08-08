@@ -18,6 +18,14 @@
     group: 'docker'
     mode:  0600
 
+- name: Create JSON RPC wrapper script
+  template:
+    dest:  '{{ nethermind_rpc_wrapper }}'
+    src:   'rpc.sh.j2'
+    owner: 'root'
+    group: 'docker'
+    mode:  0750
+
 - name: Create password file
   copy:
     dest:    '{{ nethermind_account_pass_file }}'
