@@ -22,8 +22,8 @@ nethermind_metrics_port: 6060
 nethermind_rpc_enabled: true
 nethermind_rpc_addr: '127.0.0.1'
 nethermind_rpc_port: 8545
-# Available: admin, clique, debug, eth, les, miner, net, personal, rpc, txpool, web3, engine
-nethermind_rcp_api_modules: ['eth', 'net', 'web3', 'personal', 'admin', 'engine']
+# Available: Admin, Clique, Consensus, Db, Debug, Deposit, Erc20, Eth, Evm, Health Mev, NdmConsumer, NdmProvider, Net, Nft, Parity, Personal, Proof, Subscribe, Trace, TxPool, Vault, Web3
+nethermind_rcp_api_modules: ['Eth', 'Subscribe', 'Trace', 'TxPool', 'Web3', 'Personal', 'Proof', 'Net', 'Parity', 'Health', 'Rpc']
 # useful for linking containers
 nethermind_rpc_extra_vhost: 'nethermind'
 nethermind_rpc_vhosts:
