@@ -1,0 +1,27 @@
+---
+- name: 'Wait for RPC port to be available'
+  wait_for:
+    port: '{{ nethermind_rpc_port }}'
+    delay: 5
+
+- name: 'Extract address of the node for Consul'
+  uri:
+    url: 'http://localhost:{{ nethermind_rpc_port }}/'
+    method: POST
+    body:
+      method: 'admin_nodeInfo'
+      params: []
+      jsonrpc: '2.0'
+      id: 1
+    status_code: 200
+    body_format: json
+  register: node_info
+  ignore_errors: true
+
+- debug: var=node_info
+
+- name: Verify we got the node address
+  assert:
+    that: 'node_info.json.result.enode is defined'
+    fail_msg: 'Did not receive enode address!'
+    quiet: true
