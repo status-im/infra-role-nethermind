@@ -18,8 +18,6 @@
   register: node_info
   ignore_errors: true
 
-- debug: var=node_info
-
 - name: Verify we got the node address
   assert:
     that: 'node_info.json.result.enode is defined'
