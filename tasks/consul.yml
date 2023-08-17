@@ -61,3 +61,17 @@
             tcp: 'localhost:{{ nethermind_websocket_port }}'
             failures_before_critical: 3
 
+      - id:   '{{ nethermind_cont_name }}-metrics'
+        name: '{{ nethermind_consul_service_name }}-metrics'
+        tags: '{{ nethermind_consul_tags + ["metrics"] }}'
+        port: '{{ nethermind_metrics_port }}'
+        address: '{{ nethermind_consul_advertised_address }}'
+        disabled: '{{ not nethermind_metrics_enabled }}'
+        meta:
+          container: '{{ nethermind_service_name }}'
+        checks:
+          - id: '{{ nethermind_cont_name }}-metrics-status'
+            name: 'Nethermind Metrics Endpoint'
+            type: 'tcp'
+            tcp: 'localhost:{{ nethermind_metrics_port }}'
+            failures_before_critical: 3

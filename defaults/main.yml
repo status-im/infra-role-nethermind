@@ -76,7 +76,7 @@ nethermind_rpc_wrapper: '{{ nethermind_service_path }}/rpc.sh'
 
 # Consul config
 nethermind_consul_enabled: true
-nethermind_consul_service_name: 'nethermind-{{ nethermind_network_name }}'
+nethermind_consul_service_name: 'nethermind'
 nethermind_consul_advertised_address: '{{ ansible_local.wireguard.address }}'
 nethermind_consul_scope: 'main'
 nethermind_consul_default_tags:
