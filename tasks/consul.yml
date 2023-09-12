@@ -12,6 +12,7 @@
         meta:
           node_addr:  '{{ node_info.json.result.id }}'
           node_enode: '{{ node_info.json.result.enode }}'
+          version:    '{{ nethermind_cont_tag }}'
         checks:
           - id: '{{ nethermind_cont_name }}-status'
             type: tcp
@@ -25,6 +26,7 @@
         disabled: '{{ not nethermind_rpc_enabled }}'
         meta:
           url: 'http://{{ nethermind_consul_advertised_address }}:{{ nethermind_rpc_port }}'
+          version: '{{ nethermind_cont_tag }}'
         checks:
           - id: '{{ nethermind_cont_name }}-rpc-status'
             type: 'script'
@@ -40,6 +42,7 @@
         disabled: '{{ not nethermind_authrpc_enabled }}'
         meta:
           url: 'http://{{ nethermind_consul_advertised_address }}:{{ nethermind_authrpc_port }}'
+          version: '{{ nethermind_cont_tag }}'
         checks:
           - id: '{{ nethermind_cont_name }}-authrpc-status'
             type: 'tcp'
@@ -54,6 +57,7 @@
         disabled: '{{ not nethermind_websocket_enabled }}'
         meta:
           url: 'ws://{{ nethermind_consul_advertised_address }}:{{ nethermind_websocket_port }}'
+          version: '{{ nethermind_cont_tag }}'
         checks:
           - id: '{{ nethermind_cont_name }}-ws-status'
             name: 'Nethermind WebSocket API'
@@ -69,6 +73,7 @@
         disabled: '{{ not nethermind_metrics_enabled }}'
         meta:
           container: '{{ nethermind_service_name }}'
+          version: '{{ nethermind_cont_tag }}'
         checks:
           - id: '{{ nethermind_cont_name }}-metrics-status'
             name: 'Nethermind Metrics Endpoint'
