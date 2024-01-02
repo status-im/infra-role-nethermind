@@ -4,7 +4,7 @@ nethermind_service_path: '/docker/{{ nethermind_service_name }}'
 nethermind_compose_path: '{{ nethermind_service_path }}/docker-compose.yml'
 
 # Container config
-nethermind_cont_tag: '1.23.0'
+nethermind_cont_tag: '1.24.0'
 nethermind_cont_image: 'nethermind/nethermind:{{ nethermind_cont_tag }}'
 nethermind_cont_name: '{{ nethermind_service_name }}-node'
 nethermind_cont_vol: '{{ nethermind_service_path }}/node'
