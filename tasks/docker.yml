@@ -8,10 +8,8 @@
     mode: 0640
 
 - name: Create containers
-  docker_compose:
+  community.docker.docker_compose_v2:
     project_src: '{{ nethermind_service_path }}'
-    state: '{{ compose_state }}'
-    restarted: '{{ compose_restart }}'
-    recreate: '{{ compose_recreate | default("smart") }}'
-    pull: true
-    build: false
+    state:       '{{ compose_state }}'
+    recreate:    '{{ compose_recreate }}'
+    pull:        '{{ compose_pull }}'
