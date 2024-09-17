@@ -30,8 +30,8 @@ nethermind_rpc_vhosts:
   - 'localhost'
   - '{{ nethermind_cont_name }}'
   - '{{ nethermind_rpc_extra_vhost }}'
-  - '{{ hostname }}'
-  - '{{ hostname }}.wg'
+  - '{{ inventory_hostname }}'
+  - '{{ inventory_hostname }}.wg'
   - '{{ ansible_local.wireguard.vpn_ip }}'
 
 # Engine API
