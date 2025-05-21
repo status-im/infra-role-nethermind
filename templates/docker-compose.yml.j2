@@ -39,6 +39,7 @@ services:
       --Network.P2PPort={{ nethermind_port }}
       --Network.MaxActivePeers={{ nethermind_max_peers }}
       --Init.DiscoveryEnabled={{ nethermind_discovery_enabled | to_json }}
+      --Blocks.TargetBlockGasLimit={{ nethermind_gas_limit | to_json }}
 {% if nethermind_discovery_enabled %}
       --Network.DiscoveryPort={{ nethermind_port }}
 {% endif %}
