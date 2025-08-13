@@ -52,7 +52,7 @@ nethermind_sync_mode: 'snap'
 # Maximum number of untrusted peers that can connect
 nethermind_max_peers: 100
 # Maximum amount of gas for transactions in a single block
-nethermind_gas_limit: 36000000
+nethermind_gas_limit: 45000000
 # Peer discovery protocol
 nethermind_discovery_enabled: true
 #nethermind_discovery_dns: 'enrtree://AKA3AM6LPBYEUDMVNU3BSVQJ5AD45Y7YPOHJLEF6W26QOE4VTUDPE@snap.goerli.ethdisco.net'
