@@ -47,8 +47,8 @@ services:
 {% if nethermind_discovery_dns is defined %}
       --Network.DiscoveryDns={{ nethermind_discovery_dns }}
 {% endif %}
-      --Sync.FastSync={{ nethermind_sync_mode == 'fast' | to_yaml | lower }}
-      --Sync.SnapSync={{ nethermind_sync_mode == 'snap' | to_yaml | lower }}
+      --Sync.FastSync={{ nethermind_sync_mode == 'fast' }}
+      --Sync.SnapSync={{ nethermind_sync_mode == 'snap' }}
       --Metrics.Enabled={{ nethermind_metrics_enabled | to_json }}
 {% if nethermind_metrics_enabled %}
       --Metrics.ExposePort={{ nethermind_metrics_port }}
