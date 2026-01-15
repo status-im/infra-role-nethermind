@@ -28,6 +28,7 @@ services:
     environment:
       NETHERMIND_ENODE_IPADDRESS: '{{ nethermind_public_addr }}'
       NETHERMIND_CORS_ORIGINS: '{{ nethermind_rpc_vhosts | join(",") }}'
+      NO_COLOR: '1'
     volumes:
       - '{{ nethermind_cont_vol }}/keys:/keys:rw'
       - '{{ nethermind_cont_vol }}/data:/data:rw'
