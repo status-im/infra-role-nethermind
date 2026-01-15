@@ -50,7 +50,7 @@ nethermind_websocket_port: '{{ nethermind_rpc_port|int + 1 | int }}'
 # Sync mode: full, light, snap
 nethermind_sync_mode: 'snap'
 # Maximum number of untrusted peers that can connect
-nethermind_max_peers: 100
+nethermind_max_peers: 50
 # Maximum amount of gas for transactions in a single block
 nethermind_gas_limit: 45000000
 # Peer discovery protocol
