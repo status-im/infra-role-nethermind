@@ -49,6 +49,11 @@ services:
 {% endif %}
       --Sync.FastSync={{ nethermind_sync_mode == 'fast' }}
       --Sync.SnapSync={{ nethermind_sync_mode == 'snap' }}
+      --Pruning.Mode={{ nethermind_pruning_mode }}
+{% if nethermind_pruning_trigger != "Manual" %}
+      --Pruning.FullPruningTrigger={{ nethermind_pruning_trigger }}
+      --Pruning.FullPruningThresholdMb={{ nethermind_pruning_threshold_mb }}
+{% endif %}
       --Metrics.Enabled={{ nethermind_metrics_enabled | to_json }}
 {% if nethermind_metrics_enabled %}
       --Metrics.ExposePort={{ nethermind_metrics_port }}
