@@ -70,6 +70,10 @@ nethermind_log_level_name: 'info'
 # Available: mainnet, goerli, sepolia, holesky
 nethermind_network_name: 'mainnet'
 
+# Whether a fresh state sync uses the flat-state DB backend
+# A node that already has a patricia-trie state DB keeps using it regardless of this setting
+nethermind_flatdb_enabled: false
+
 # Port to listen on
 nethermind_port: 30303
 # Address to advertise

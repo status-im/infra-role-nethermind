@@ -37,6 +37,7 @@ services:
       --datadir=/data
       --config={{ nethermind_network_name }}
       --log={{ nethermind_log_level_name }}
+      --FlatDb.Enabled={{ nethermind_flatdb_enabled | to_json }}
       --Network.P2PPort={{ nethermind_port }}
       --Network.MaxActivePeers={{ nethermind_max_peers }}
       --Init.DiscoveryEnabled={{ nethermind_discovery_enabled | to_json }}
